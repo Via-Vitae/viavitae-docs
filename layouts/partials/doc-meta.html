@@ -1,0 +1,4 @@
+{{/* Custom partial: doc-meta — displays owner, review date, version banner. */}}
+{{ with .Params.owner }}<span class="doc-owner">Owner: {{ . }}</span>{{ end }}
+{{ with .Params.review_date }}<span class="doc-review">Review by: {{ . }}</span>{{ end }}
+{{ with .Params.version }}<span class="doc-version">v{{ . }}</span>{{ end }}

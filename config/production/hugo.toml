@@ -1,0 +1,6 @@
+# Production environment configuration.
+
+baseURL = "https://docs.viavitae.com/"
+
+[params]
+  noindex = false

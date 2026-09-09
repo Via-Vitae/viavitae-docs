@@ -1,0 +1,7 @@
+# Staging environment overrides.
+# Robots noindex to prevent staging from being indexed.
+
+baseURL = "https://docs-staging.viavitae.com/"
+
+[params]
+  noindex = true

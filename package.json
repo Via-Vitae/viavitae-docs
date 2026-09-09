@@ -1,0 +1,23 @@
+{
+  "name": "@via-vitae/docs",
+  "version": "1.0.0",
+  "description": "ViaVitae documentation hub — Hugo + Doks, multilingual LT/EN/RU.",
+  "private": true,
+  "scripts": {
+    "dev": "hugo server --environment staging",
+    "build": "hugo --minify --environment production",
+    "lint:md": "markdownlint --config .markdownlint.json 'content/**/*.md'",
+    "check:frontmatter": "python scripts/check-frontmatter.py",
+    "check:i18n": "python scripts/check-i18n-parity.py",
+    "check:links": "python scripts/check-links.py",
+    "check:pii": "python scripts/check-pii.py",
+    "check:all": "npm run lint:md && npm run check:frontmatter && npm run check:i18n && npm run check:links && npm run check:pii"
+  },
+  "dependencies": {
+    "@thulite/doks-core": "^1.8.0",
+    "hugo-extended": "^0.139.0"
+  },
+  "devDependencies": {
+    "markdownlint-cli": "^0.43.0"
+  }
+}

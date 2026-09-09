@@ -1,0 +1,58 @@
+# Navigation menu for lt locale.
+
+[[main]]
+  name = "Architektūra"
+  weight = 10
+  identifier = "architecture"
+  url = "/architecture/"
+
+[[main]]
+  name = "GDPR"
+  weight = 20
+  identifier = "gdpr"
+  url = "/gdpr/"
+
+[[main]]
+  name = "Saugumas"
+  weight = 30
+  identifier = "security"
+  url = "/security/"
+
+[[main]]
+  name = "Veiksmų vadovai"
+  weight = 40
+  identifier = "runbooks"
+  url = "/runbooks/"
+
+[[main]]
+  name = "Įvedimas"
+  weight = 50
+  identifier = "onboarding"
+  url = "/onboarding/"
+
+[[main]]
+  name = "SEO"
+  weight = 60
+  identifier = "seo"
+  url = "/seo/"
+
+[[main]]
+  name = "Teisinė"
+  weight = 70
+  identifier = "legal"
+  url = "/legal/"
+
+[[footer]]
+  name = "Privatumo politika"
+  weight = 10
+  url = "/legal/privacy-policy/"
+
+[[footer]]
+  name = "Slapukų politika"
+  weight = 20
+  url = "/legal/cookie-policy/"
+
+[[footer]]
+  name = "Paslaugų sąlygos"
+  weight = 30
+  url = "/legal/terms-of-service/"

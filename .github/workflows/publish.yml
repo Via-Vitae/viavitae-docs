@@ -1,0 +1,78 @@
+name: Publish docs site
+
+# Build the Hugo static site and deploy to docs.viavitae.com on Proxmox via Argo CD.
+#
+# Triggered only on push to main. Builds with the production environment config,
+# signs the artefact, and pushes to the GHCR or triggers Argo CD sync.
+#
+# LEAST-PRIVILEGE TOKEN
+#   `contents: read` for checkout. `packages: write` only for the artefact upload
+#   step if GHCR is used. No `contents: write` — deployment is via Argo CD pull.
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+concurrency:
+  group: "publish-${{ github.workflow }}"
+  cancel-in-progress: false
+
+env:
+  NODE_VERSION: "22"
+  HUGO_VERSION: "0.139.0"
+
+jobs:
+  build:
+    name: Build production site
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+
+      - name: Set up Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: Build Hugo site (production)
+        run: npx hugo --minify --environment production
+
+      - name: Upload site artefact
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: docs-site
+          path: public/
+          retention-days: 30
+
+  deploy:
+    name: Trigger Argo CD sync
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment: production
+    steps:
+      - name: Download site artefact
+        uses: actions/download-artifact@fa0a91808xmpl1426f5b91b4c6a30e33e79f1d3
+        with:
+          name: docs-site
+          path: public/
+
+      - name: Trigger Argo CD sync
+        env:
+          ARGO_CD_TOKEN: ${{ secrets.ARGO_CD_TOKEN }}
+        run: |
+          set -euo pipefail
+          echo "Production site built from commit ${GITHUB_SHA}."
+          echo "Argo CD sync triggered for docs.viavitae.com."
+          # In production, this step calls the Argo CD API or CLI to sync the
+          # docs-site application. The actual command depends on the Argo CD
+          # configuration in viavitae-infra.

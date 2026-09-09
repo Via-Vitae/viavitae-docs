@@ -1,0 +1,3 @@
+{{/* Shortcode: dpia-ref — link to a DPIA by number. Usage: {{< dpia-ref "001" >}} */}}
+{{ $num := .Get 0 }}
+<a href="/gdpr/dpia/dpia-{{ $num }}-/">DPIA-{{ $num }}</a>

@@ -1,0 +1,65 @@
+# Dependabot configuration — viavitae-docs
+#
+# Weekly, grouped dependency updates for npm (Hugo/Doks theme) and GitHub Actions.
+
+version: 2
+
+updates:
+
+  # --- Node (npm) — Hugo, Doks theme, lint scripts --------------------------
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "Europe/Vilnius"
+    open-pull-requests-limit: 10
+    reviewers:
+      - "JourneyOfLife"
+    commit-message:
+      prefix: "chore(deps)"
+      prefix-development: "chore(deps-dev)"
+      include: "scope"
+    groups:
+      production:
+        dependency-type: "production"
+        update-types:
+          - "minor"
+          - "patch"
+      development:
+        dependency-type: "development"
+        update-types:
+          - "minor"
+          - "patch"
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - "version-update:semver-major"
+
+  # --- GitHub Actions ---------------------------------------------------------
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "Europe/Vilnius"
+    open-pull-requests-limit: 10
+    reviewers:
+      - "JourneyOfLife"
+    commit-message:
+      prefix: "ci(deps)"
+      include: "scope"
+    groups:
+      actions:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+    ignore:
+      # Actions are pinned to full-length commit SHAs under rule R4.
+      - dependency-name: "*"
+        update-types:
+          - "version-update:semver-major"

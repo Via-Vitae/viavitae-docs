@@ -1,0 +1,3 @@
+{{/* Shortcode: adrlink — link to an ADR by number. Usage: {{< adrlink "0001" >}} */}}
+{{ $num := .Get 0 }}
+<a href="/architecture/adr-{{ $num }}-/">ADR-{{ $num }}</a>

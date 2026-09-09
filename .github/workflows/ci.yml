@@ -1,0 +1,184 @@
+name: CI
+
+# Continuous integration for viavitae-docs.
+#
+# Pipeline: markdown lint -> link check -> front-matter schema -> i18n parity ->
+# PII sweep -> Hugo build.
+#
+# SECURITY (rule R4)
+#   - Least-privilege GITHUB_TOKEN: `contents: read` for the whole workflow.
+#   - Every third-party action is pinned to a full-length commit SHA.
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: "ci-${{ github.workflow }}-${{ github.ref }}"
+  cancel-in-progress: true
+
+env:
+  PYTHON_VERSION: "3.12"
+  NODE_VERSION: "22"
+
+jobs:
+  # ---------------------------------------------------------------------------
+  # markdown-lint — style and structure
+  # ---------------------------------------------------------------------------
+  markdown-lint:
+    name: Markdown lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+
+      - name: Set up Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install markdownlint
+        run: npm install -g markdownlint-cli
+
+      - name: Run markdownlint
+        run: markdownlint --config .markdownlint.json 'content/**/*.md' --ignore 'content/**/_index.*.md'
+
+  # ---------------------------------------------------------------------------
+  # link-check — internal link integrity
+  # ---------------------------------------------------------------------------
+  link-check:
+    name: Link check
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+
+      - name: Set up Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Run link checker
+        run: python scripts/check-links.py
+
+  # ---------------------------------------------------------------------------
+  # frontmatter — schema validation
+  # ---------------------------------------------------------------------------
+  frontmatter:
+    name: Front-matter schema
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+
+      - name: Set up Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install validation dependencies
+        run: pip install pyyaml jsonschema
+
+      - name: Validate front-matter
+        run: python scripts/check-frontmatter.py
+
+  # ---------------------------------------------------------------------------
+  # i18n-parity — LT/EN/RU triplet check
+  # ---------------------------------------------------------------------------
+  i18n-parity:
+    name: i18n parity (LT/EN/RU)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+
+      - name: Set up Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Check i18n parity
+        run: python scripts/check-i18n-parity.py
+
+  # ---------------------------------------------------------------------------
+  # pii-sweep — personal data regex scan
+  # ---------------------------------------------------------------------------
+  pii-sweep:
+    name: PII sweep
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+
+      - name: Set up Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Run PII check
+        run: python scripts/check-pii.py
+
+  # ---------------------------------------------------------------------------
+  # hugo-build — verify the site builds
+  # ---------------------------------------------------------------------------
+  hugo-build:
+    name: Hugo build
+    needs: [markdown-lint, link-check, frontmatter, i18n-parity, pii-sweep]
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+
+      - name: Set up Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: Build Hugo site
+        run: npx hugo --minify --environment staging
+
+      - name: Upload build artefact
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: hugo-public
+          path: public/
+          if-no-files-found: ignore
+          retention-days: 7
+
+  # ---------------------------------------------------------------------------
+  # ci-status — single required check for branch protection
+  # ---------------------------------------------------------------------------
+  ci-status:
+    name: CI status
+    needs: [markdown-lint, link-check, frontmatter, i18n-parity, pii-sweep, hugo-build]
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Evaluate required gates
+        run: |
+          set -euo pipefail
+          results='${{ toJSON(needs) }}'
+          failed=$(printf '%s' "$results" | grep -o '"result":"failure"' | wc -l || true)
+          cancelled=$(printf '%s' "$results" | grep -o '"result":"cancelled"' | wc -l || true)
+          printf '%s' "$results" | grep -o '"[a-z-]*":{"result":"[a-z]*"' || true
+          if [ "$failed" -ne 0 ] || [ "$cancelled" -ne 0 ]; then
+            echo "::error::CI failed: ${failed} job(s) failed, ${cancelled} cancelled."
+            exit 1
+          fi
+          echo "All required gates passed or were legitimately skipped."
