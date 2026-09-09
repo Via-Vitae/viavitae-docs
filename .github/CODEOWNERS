@@ -1,0 +1,57 @@
+# CODEOWNERS — default owner mapping
+#
+# Each line is a path pattern followed by one or more owners. Later patterns take
+# precedence over earlier ones, so the most specific rule wins.
+#
+# ---------------------------------------------------------------------------
+# RULE R2 — CODEOWNERS IMMUTABILITY
+#
+# 1. This file is NEVER empty.
+# 2. Overrides are allowed for narrower paths.
+# 3. Removal of an owner or widening `*` requires compliance team approval.
+# 4. Owners are real identities, not team placeholders.
+# ---------------------------------------------------------------------------
+
+# --- Default owner for everything -------------------------------------------
+*                                       @JourneyOfLife @IterVitae
+
+# --- GitHub configuration ----------------------------------------------------
+/.github/                               @JourneyOfLife @IterVitae
+/.github/workflows/                     @JourneyOfLife @IterVitae
+/.github/CODEOWNERS                     @JourneyOfLife @IterVitae
+/.github/dependabot.yml                 @JourneyOfLife
+
+# --- Governance root files ---------------------------------------------------
+/.editorconfig                          @JourneyOfLife
+/.gitignore                             @JourneyOfLife
+/LICENSE                                @JourneyOfLife @IterVitae
+/SECURITY.md                            @JourneyOfLife @IterVitae
+/CONTRIBUTING.md                        @JourneyOfLife
+/QODER.md                               @JourneyOfLife
+/CHANGELOG.md                           @JourneyOfLife
+/README.md                              @JourneyOfLife
+
+# --- GDPR and compliance content --------------------------------------------
+/content/gdpr/                          @JourneyOfLife @IterVitae
+/docs/DPIA-template.md                  @JourneyOfLife @IterVitae
+
+# --- Security content --------------------------------------------------------
+/content/security/                      @JourneyOfLife @IterVitae
+
+# --- Legal content -----------------------------------------------------------
+/content/legal/                         @JourneyOfLife @IterVitae
+
+# --- Internal-only content (never published) ---------------------------------
+/internal/                              @JourneyOfLife @IterVitae
+
+# --- Hugo configuration and site tooling -------------------------------------
+/config/                                @JourneyOfLife
+/layouts/                               @JourneyOfLife
+/scripts/                               @JourneyOfLife
+/package.json                           @JourneyOfLife
+/Dockerfile                             @JourneyOfLife
+/docker-compose.yml                     @JourneyOfLife
+
+# --- Architecture decisions --------------------------------------------------
+/content/architecture/                  @JourneyOfLife @IterVitae
+/docs/architecture.md                   @JourneyOfLife @IterVitae

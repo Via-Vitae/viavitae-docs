@@ -1,0 +1,7 @@
+{{/* Custom partial: language-fallback-warning — shown when content falls back to LT. */}}
+{{ if .IsTranslated }}
+{{ else }}
+<div class="fallback-warning">
+  <p>This page is not yet available in your selected language. Showing the Lithuanian version.</p>
+</div>
+{{ end }}

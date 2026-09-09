@@ -1,0 +1,116 @@
+name: Bug report
+description: Report a broken link, wrong procedure, or outdated reference. For security vulnerabilities, use the private disclosure process in SECURITY.md instead.
+title: "bug(<scope>): "
+labels: ["bug", "triage"]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Stop — is this a security vulnerability?
+
+        **Do not file a public issue for a security problem.** Report privately to
+        **security@viavitae.com**. See [SECURITY.md](../../SECURITY.md).
+
+  - type: markdown
+    attributes:
+      value: |
+        ### Before you file
+
+        - Search existing issues. Add your evidence to an existing report rather than
+          opening a duplicate.
+        - **Scrub personal data from everything you paste.**
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      options:
+        - "critical — published incorrect legal/privacy text or PII exposure"
+        - "high — broken procedure, outdated law reference, or compliance gap"
+        - "medium — broken link, missing translation, outdated screenshot"
+        - "low — typo, formatting issue, minor inconsistency"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: section
+    attributes:
+      label: Affected section
+      options:
+        - "architecture (ADR register)"
+        - "gdpr (ROPA, DPIA, DPA, DSR, cookies, retention)"
+        - "security (SOA, policies, incidents, pentest, supply-chain)"
+        - "runbooks"
+        - "onboarding (client guides, training)"
+        - "seo"
+        - "sop (internal procedures)"
+        - "legal (privacy policy, terms, cookie policy)"
+        - "about (writing guide, ownership, translation)"
+        - "site configuration or build"
+    validations:
+      required: true
+
+  - type: input
+    id: page
+    attributes:
+      label: Affected page or file
+      description: The specific file path or URL path of the affected page.
+      placeholder: "content/gdpr/ropa/ropa-agency-site.md"
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: What is wrong
+      description: Describe the defect. Quote the incorrect text if applicable.
+      render: markdown
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What should it say
+      description: The correct content, procedure, or link target.
+      render: markdown
+    validations:
+      required: true
+
+  - type: dropdown
+    id: gdpr
+    attributes:
+      label: GDPR relevance
+      options:
+        - "no — no personal data involved"
+        - "possibly — the error may affect a GDPR compliance statement"
+        - "yes — incorrect privacy text is published or PII is exposed"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: language
+    attributes:
+      label: Affected language(s)
+      options:
+        - "lt only"
+        - "en only"
+        - "ru only"
+        - "lt + en"
+        - "lt + en + ru"
+        - "all languages"
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: confirmations
+    attributes:
+      label: Confirmations
+      options:
+        - label: This is not a security vulnerability.
+          required: true
+        - label: I have searched existing issues and this is not a duplicate.
+          required: true
+        - label: Everything I pasted has been scrubbed of personal data and secrets.
+          required: true

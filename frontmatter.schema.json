@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ViaVitae Docs front-matter",
+  "type": "object",
+  "required": ["title", "owner", "review_date", "version", "language", "sensitivity"],
+  "properties": {
+    "title": { "type": "string", "minLength": 1 },
+    "description": { "type": "string" },
+    "owner": { "type": "string", "pattern": "^@\\w+$" },
+    "review_date": { "type": "string", "format": "date" },
+    "version": { "type": "string" },
+    "language": { "type": "string", "enum": ["lt", "en", "ru", "pl", "de"] },
+    "sensitivity": { "type": "string", "enum": ["public", "clients-only", "internal"] }
+  },
+  "additionalProperties": false
+}

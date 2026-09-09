@@ -1,0 +1,24 @@
+{
+  "name": "@via-vitae/docs",
+  "version": "1.0.0",
+  "description": "ViaVitae documentation hub \u2014 Hugo + Doks, multilingual LT/EN/RU.",
+  "private": true,
+  "scripts": {
+    "dev": "hugo server --environment staging",
+    "build": "hugo --minify --environment production",
+    "lint:md": "markdownlint --config .markdownlint.json 'content/**/*.md'",
+    "check:frontmatter": "python scripts/check-frontmatter.py",
+    "check:i18n": "python scripts/check-i18n-parity.py",
+    "check:links": "python scripts/check-links.py",
+    "check:pii": "python scripts/check-pii.py",
+    "check:all": "npm run lint:md && npm run check:frontmatter && npm run check:i18n && npm run check:links && npm run check:pii",
+    "postinstall": "mkdir -p themes && rm -rf themes/doks && cp -r node_modules/@thulite/doks-core themes/doks && find themes/doks/layouts -type d -name \"_partials\" -exec sh -c 'for d; do mv \"$d\" \"${d%_partials}partials\"; done' _ {} + && find themes/doks/layouts -type d -name \"_shortcodes\" -exec sh -c 'for d; do mv \"$d\" \"${d%_shortcodes}shortcodes\"; done' _ {} + && printf '{{- $classes := slice }}{{- if site.Params.doks.scrollSpy }}{{- $classes = $classes | append \"smooth-scroll\" }}{{- end }}{{- .Scratch.Set \"class\" $classes }}' > themes/doks/layouts/partials/head/body-class.html && echo \"{{- /* custom script footer stub */ -}}\" > themes/doks/layouts/partials/footer/script-footer-custom.html && echo \"// custom js stub\" > themes/doks/assets/js/custom.js && sed -i \"s|import '@thulite/core/assets/js/core.js';|// & // Disabled: dependency not available|\" themes/doks/assets/js/app.js"
+  },
+  "dependencies": {
+    "@thulite/doks-core": "^1.8.0",
+    "hugo-extended": "^0.141.0"
+  },
+  "devDependencies": {
+    "markdownlint-cli": "^0.43.0"
+  }
+}

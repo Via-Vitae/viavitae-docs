@@ -1,0 +1,52 @@
+# Hugo base configuration for viavitae-docs.
+# Docs site: Hugo + Doks theme, multilingual LT (default) / EN / RU, PL/DE stubs.
+
+baseURL = "https://docs.viavitae.com/"
+title = "ViaVitae Docs"
+theme = ["doks"]
+enableRobotsTXT = true
+enableGitInfo = true
+enableEmoji = false
+
+# Ignore internal/ directory — never published to the docs site.
+ignoreFiles = ["^internal/"]
+
+defaultContentLanguage = "lt"
+defaultContentLanguageInSubdir = false
+
+[module]
+  [[module.mounts]]
+    source = "content"
+    target = "content"
+  [[module.mounts]]
+    source = "static"
+    target = "static"
+  [[module.mounts]]
+    source = "layouts"
+    target = "layouts"
+  [[module.mounts]]
+    source = "data"
+    target = "data"
+  [[module.mounts]]
+    source = "assets"
+    target = "assets"
+  [[module.mounts]]
+    source = "i18n"
+    target = "i18n"
+  [[module.mounts]]
+    source = "archetypes"
+    target = "archetypes"
+
+[security]
+  [security.funcs]
+    getenv = ["^HUGO_"]
+  [security.http]
+    methods = ["(?i)GET|POST"]
+    urls = [""]
+
+[build]
+  [build.buildStats]
+    enable = true
+
+[languages]
+  # Defined in languages.toml

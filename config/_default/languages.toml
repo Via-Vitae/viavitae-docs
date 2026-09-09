@@ -1,0 +1,38 @@
+# Language configuration: LT (default), EN, RU active; PL, DE disabled stubs.
+
+[lt]
+  languageName = "Lietuvių"
+  contentDir = "content"
+  weight = 1
+  [lt.params]
+    languageISO = "LT"
+
+[en]
+  languageName = "English"
+  contentDir = "content"
+  weight = 2
+  [en.params]
+    languageISO = "EN"
+
+[ru]
+  languageName = "Русский"
+  contentDir = "content"
+  weight = 3
+  [ru.params]
+    languageISO = "RU"
+
+[pl]
+  languageName = "Polski"
+  contentDir = "content"
+  disabled = true
+  weight = 4
+  [pl.params]
+    languageISO = "PL"
+
+[de]
+  languageName = "Deutsch"
+  contentDir = "content"
+  disabled = true
+  weight = 5
+  [de.params]
+    languageISO = "DE"

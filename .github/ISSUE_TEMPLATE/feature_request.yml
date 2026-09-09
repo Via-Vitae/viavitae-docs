@@ -1,0 +1,104 @@
+name: Feature request
+description: Propose a new documentation section, content update, or site feature.
+title: "feat(<scope>): "
+labels: ["enhancement", "triage"]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for proposing a change. A request that answers the compliance
+        questions below can be scheduled immediately; one that does not will be returned
+        for clarification.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem statement
+      description: What information is missing, outdated, or hard to find? Who needs it?
+      placeholder: |
+        Auditors cannot find the sub-processor register during compliance reviews
+        because it is scattered across multiple files.
+      render: markdown
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed solution
+      description: What content or section should be added or changed?
+      render: markdown
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: What other approaches were considered?
+      render: markdown
+    validations:
+      required: true
+
+  - type: dropdown
+    id: personal-data
+    attributes:
+      label: Does this involve personal data?
+      options:
+        - "no — no personal data is processed or published"
+        - "yes — the new content references personal data"
+        - "unknown — I need the DPO to assess this"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: i18n
+    attributes:
+      label: i18n impact
+      options:
+        - "none — no user-facing content"
+        - "lt / en / ru — parity required in the same change"
+        - "requires a new locale"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: section
+    attributes:
+      label: Affected section
+      options:
+        - "architecture"
+        - "gdpr"
+        - "security"
+        - "runbooks"
+        - "onboarding"
+        - "seo"
+        - "sop"
+        - "legal"
+        - "about"
+        - "site configuration or build"
+        - "new section"
+    validations:
+      required: true
+
+  - type: input
+    id: review-date
+    attributes:
+      label: Proposed review date
+      description: When should this content next be reviewed for accuracy? (YYYY-MM-DD, max 6 months)
+      placeholder: "2027-03-09"
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: confirmations
+    attributes:
+      label: Confirmations
+      options:
+        - label: I have searched existing issues and this is not a duplicate.
+          required: true
+        - label: I have answered the compliance questions honestly.
+          required: true
+        - label: I have not included any personal data, secret or credential in this request.
+          required: true

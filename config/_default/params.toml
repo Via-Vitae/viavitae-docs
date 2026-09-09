@@ -1,0 +1,15 @@
+# Theme parameters for Doks.
+
+description = "ViaVitae documentation hub — compliance, architecture, runbooks and client guides."
+images = ["images/og-default.png"]
+
+[search]
+  enable = true
+  type = "flexsearch"
+
+[editPage]
+  editURL = "https://github.com/Via-Vitae/viavitae-docs/edit/main/content/"
+  repoHost = "GitHub"
+
+[docsNavigation]
+  collapsible = true
