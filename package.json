@@ -18,6 +18,6 @@
     "hugo-extended": "^0.139.0"
   },
   "devDependencies": {
-    "markdownlint-cli": "^0.43.0"
+    "markdownlint-cli": "^0.49.1"
   }
 }
