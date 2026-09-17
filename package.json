@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@thulite/doks-core": "^1.8.0",
-    "hugo-extended": "^0.141.0"
+    "hugo-extended": "^0.166.0"
   },
   "devDependencies": {
     "markdownlint-cli": "^0.49.1"
