@@ -15,8 +15,8 @@
     "postinstall": "mkdir -p themes && rm -rf themes/doks && cp -r node_modules/@thulite/doks-core themes/doks && find themes/doks/layouts -type d -name \"_partials\" -exec sh -c 'for d; do mv \"$d\" \"${d%_partials}partials\"; done' _ {} + && find themes/doks/layouts -type d -name \"_shortcodes\" -exec sh -c 'for d; do mv \"$d\" \"${d%_shortcodes}shortcodes\"; done' _ {} + && printf '{{- $classes := slice }}{{- if site.Params.doks.scrollSpy }}{{- $classes = $classes | append \"smooth-scroll\" }}{{- end }}{{- .Scratch.Set \"class\" $classes }}' > themes/doks/layouts/partials/head/body-class.html && echo \"{{- /* custom script footer stub */ -}}\" > themes/doks/layouts/partials/footer/script-footer-custom.html && echo \"// custom js stub\" > themes/doks/assets/js/custom.js && sed -i \"s|import '@thulite/core/assets/js/core.js';|// & // Disabled: dependency not available|\" themes/doks/assets/js/app.js"
   },
   "dependencies": {
-    "@thulite/doks-core": "^1.8.0",
-    "hugo-extended": "^0.141.0"
+    "@thulite/doks-core": "^1.9.4",
+    "hugo-extended": "^0.166.0"
   },
   "devDependencies": {
     "markdownlint-cli": "^0.49.1"
