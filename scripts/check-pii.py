@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Regex sweep for personal data: names, emails, phone numbers."""
 
+import os
 import re
 import sys
 from pathlib import Path
@@ -17,8 +18,14 @@ EXEMPT_FILES = {"check-pii.py"}
 def main() -> int:
     content_dir = Path("content")
     if not content_dir.exists():
-        print("No content/ directory found.")
-        return 0
+        # Zero files examined is NOT a clean verdict. Returning 0 here let any repo
+        # without a Hugo content/ directory "pass" a PII gate it never ran (found
+        # 2026-10-12: cited in .github/PULL_REQUEST_TEMPLATE.md as proof of "No PII
+        # in diff" while public fixtures/data/donors.json was never even opened).
+        # Exit 2 keeps "cannot check" distinct from "no findings" (see plan_gate.py
+        # and policies/enforce_sso.sh in viavitae-control for the same doctrine).
+        print("UNEVALUATED: no content/ directory found — 0 files examined, no PII verdict.")
+        return 0 if os.environ.get("PII_ALLOW_EMPTY") == "1" else 2
     findings: list[str] = []
     for md in sorted(content_dir.rglob("*.md")):
         if any(exempt in md.parts for exempt in EXEMPT_DIRS):
