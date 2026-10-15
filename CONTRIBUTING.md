@@ -15,7 +15,7 @@ Contributors, reviewers and maintainers are expected to treat each other with re
 critique work rather than people, and to assume good faith. Harassment, discrimination and
 personal attacks are not accepted in any ViaVitae space.
 
-Report a concern to `legal@viavitae.com`. Reports are handled confidentially.
+Report a concern to `journey4oflife+viavitae.billing@gmail.com`. Reports are handled confidentially.
 
 Because ViaVitae serves religious communities, contributors additionally commit to
 respecting the confidentiality and dignity of data subjects — many of whom are members of a
@@ -96,5 +96,5 @@ A pull request may be merged only when **all** of the following hold:
 | --- | --- |
 | Workflow, review, branch or commit rules | This document |
 | Architecture or design decisions | Record as an ADR in `docs/architecture.md` |
-| Personal data, DPIA, retention, processors | `dpo@viavitae.com` |
-| Vulnerabilities and security incidents | `security@viavitae.com` — private, per [SECURITY.md](SECURITY.md) |
+| Personal data, DPIA, retention, processors | `journey4oflife+viavitae.privacy@gmail.com` |
+| Vulnerabilities and security incidents | `journey4oflife+viavitae.security@gmail.com` — private, per [SECURITY.md](SECURITY.md) |
