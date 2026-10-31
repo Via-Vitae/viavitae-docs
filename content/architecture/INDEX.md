@@ -24,3 +24,4 @@ sensitivity: "public"
 | ADR-0009 | Stripe + Paysera | Priimtas | @JourneyOfLife | 2026-09-09 |
 | ADR-0010 | Headless Payload CMS | Priimtas | @JourneyOfLife | 2026-09-09 |
 | ADR-0011 | Demo nuomininkų izoliacija | Priimtas | @JourneyOfLife | 2026-09-09 |
+| ADR-0012 | Source-less scaffold coverage exemption | Priimtas | @JourneyOfLife | 2026-11-01 |
